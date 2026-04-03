@@ -1,0 +1,30 @@
+name: SimpleRewards
+version: ${version}
+main: dev.user.rewards.SimpleRewardsPlugin
+api-version: '1.21'
+folia-supported: true
+depend: [PlaceholderAPI]
+softdepend: [XConomy, PlayerPoints]
+
+commands:
+  rewards:
+    description: 奖励系统主命令
+    permission: simplerewards.use
+    usage: /<command> [online|custom|admin|lookup|reset|reload]
+
+permissions:
+  simplerewards.use:
+    default: true
+    description: 使用基础命令
+  simplerewards.admin:
+    default: op
+    description: 管理员权限
+    children:
+      simplerewards.reload: true
+      simplerewards.lookup: true
+  simplerewards.reload:
+    default: op
+    description: 重载配置
+  simplerewards.lookup:
+    default: op
+    description: 查询玩家奖励记录

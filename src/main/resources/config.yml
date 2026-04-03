@@ -1,0 +1,58 @@
+# SimpleRewards 配置文件
+
+# 数据库配置
+database:
+  # 数据库类型: h2（本地）或 mysql（跨服）
+  type: h2
+
+  # H2 数据库配置（本地模式，不支持跨服）
+  h2:
+    filename: rewards
+
+  # MySQL 数据库配置（支持跨服）
+  mysql:
+    host: localhost
+    port: 3306
+    database: simplerewards
+    username: root
+    password: password
+    pool-size: 5
+
+# 每周在线时长奖励配置
+weekly-online:
+  enabled: true
+  # 每周起始日: MONDAY, TUESDAY, ..., SUNDAY
+  week-start-day: MONDAY
+  # 在线时长检查间隔（秒），同时影响数据刷新频率和PAPI离线缓存过期时间
+  check-interval: 60
+  # 是否自动发放里程碑奖励（false 则需要玩家通过 GUI 手动领取）
+  auto-grant: true
+  # 未领取里程碑提醒模式: once (达成时仅提醒一次), interval (定时重复提醒), none (不提醒)
+  # 仅在 auto-grant: false 时生效
+  reminder-mode: once
+  # 提醒间隔（分钟），仅 reminder-mode: interval 时生效
+  reminder-interval: 60
+  # 里程碑配置（单位：分钟，达到后自动发放）
+  milestones:
+    120:
+      money: 100.0
+      points: 10
+      description: "本周累计在线2小时"
+    300:
+      money: 200.0
+      points: 20
+      description: "本周累计在线5小时"
+    600:
+      money: 500.0
+      points: 50
+      description: "本周累计在线10小时"
+    1200:
+      money: 1000.0
+      points: 100
+      description: "本周累计在线20小时"
+
+# 首次加入奖励
+first-join:
+  enabled: true
+  money: 1000.0
+  points: 100

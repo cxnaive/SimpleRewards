@@ -1,0 +1,87 @@
+# SimpleRewards 消息配置
+
+# 前缀
+prefix: "&6[奖励系统] &r"
+
+# 通用消息
+no-permission: "&c你没有权限执行此操作！"
+player-only: "&c此命令只能由玩家执行！"
+player-not-found: "&c玩家不存在或不在线！"
+unknown-command: "&c未知命令！"
+reload-success: "&a配置已重载！"
+weekly-not-enabled: "&c每周在线奖励功能未启用"
+custom-reward-not-enabled: "&c自定义奖励功能未启用"
+player-never-joined: "&c玩家 {player} 从未加入过服务器"
+
+# 每周在线奖励
+weekly-milestone-received: "&a本周在线时长达到 {time} 分钟，获得奖励！"
+weekly-milestone-claimed: "&c你已经领取过该档奖励了！"
+weekly-progress: "&e本周已在线 {current} 分钟，下一档里程碑：{next} 分钟（{description}）"
+
+# 首次加入
+first-join-reward: "&a欢迎加入服务器！获得新人礼包：{reward}"
+
+# 管理员命令
+give-success: "&a成功给予玩家 {player} 奖励"
+give-failed: "&c给予奖励失败！"
+take-success: "&a成功扣除玩家 {player} 奖励"
+take-failed: "&c扣除奖励失败！"
+
+# 查询
+lookup-header: "&6========== &e{player} &6=========="
+lookup-no-data: "&e玩家 {player} 没有在线时长记录"
+lookup-failed: "&c查询失败: {error}"
+lookup-week: "&e数据周: &a{week}"
+lookup-weekly-online: "&e本周在线: &a{hours}h {minutes}m"
+lookup-total-online: "&e总在线时长: &a{hours}h {minutes}m"
+lookup-claimed: "&e已领取里程碑: &a{claimed}"
+
+# 重置
+reset-milestones-success: "&a已清空所有玩家的里程碑领取记录！"
+reset-milestones-failed: "&c清空失败，请查看控制台日志"
+
+# 帮助信息
+help-header: "&e========== 奖励系统帮助 =========="
+help-online: "&e/rewards &7- 打开每周在线奖励"
+help-custom: "&e/rewards custom &7- 打开自定义奖励"
+help-admin: "&e/rewards admin &7- 管理自定义奖励"
+help-lookup: "&e/rewards lookup <玩家> &7- 查询玩家数据"
+help-reset: "&e/rewards reset milestones &7- 清空里程碑领取记录"
+help-reload: "&e/rewards reload &7- 重载配置"
+help-footer: "&e=================================="
+
+# 里程碑奖励
+milestone-reached: "&6[奖励系统] &a恭喜！{description}，获得奖励："
+milestone-reward-money: "&7  ✓ {money} 金币"
+milestone-reward-points: "&b  ✓ {points} 点券"
+milestone-claim-success: "&a成功领取里程碑奖励: {description}"
+milestone-claim-failed: "&c奖励领取失败，可能已被领取"
+milestone-can-claim: "&6[奖励系统] &e恭喜达成里程碑 &a{description}&e！使用 &b/rewards &e领取奖励"
+
+# 自定义奖励
+custom-reward-claim-success: "&a成功领取奖励 &6{reward}&a！"
+custom-reward-claim-money: "&e  +{money} 金币"
+custom-reward-claim-points: "&b  +{points} 点券"
+custom-reward-claim-limit: "&c你已达到该奖励的领取上限"
+custom-reward-claim-expired: "&c该奖励已过期"
+custom-reward-claim-not-found: "&c奖励不存在"
+custom-reward-claim-disabled: "&c该奖励已禁用"
+custom-reward-claim-error: "&c领取失败，请稍后重试"
+custom-reward-create-success: "&a成功创建奖励: {reward}"
+custom-reward-create-exists: "&c奖励ID已存在: {reward}"
+custom-reward-delete-success: "&a成功删除奖励: {reward}"
+custom-reward-delete-not-found: "&c奖励不存在: {reward}"
+custom-reward-update-success: "&a奖励配置已更新"
+custom-reward-update-failed: "&c奖励更新失败"
+custom-reward-edit-id-required: "&c请先设置奖励ID"
+
+# 自定义奖励 GUI
+custom-reward-gui-player-title: "&a可领取奖励"
+custom-reward-gui-admin-title: "&c奖励管理（管理员）"
+custom-reward-gui-edit-title: "&e编辑奖励: {reward}"
+custom-reward-gui-create-title: "&e创建新奖励"
+
+# GUI
+gui:
+  main-title: "&6奖励中心"
+  online-title: "&b每周在线奖励"
