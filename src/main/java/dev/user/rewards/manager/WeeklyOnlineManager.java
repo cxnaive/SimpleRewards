@@ -190,7 +190,10 @@ public class WeeklyOnlineManager {
             }
             return null;
         }, result -> {
-            checkMilestones(uuid, weeklySeconds);
+            // 回调时如果已跨周，跳过里程碑检测（避免旧周数据触发重复发放）
+            if (weekStart.equals(currentWeekStart)) {
+                checkMilestones(uuid, weeklySeconds);
+            }
         }, error -> {
             plugin.getLogger().warning("刷入在线数据失败 [" + uuid + "]: " + error.getMessage());
         });
