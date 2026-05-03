@@ -42,6 +42,12 @@ tasks.withType<JavaCompile> {
     targetCompatibility = "21"
 }
 
+tasks.processResources {
+    filesMatching("plugin.yml") {
+        expand("version" to version)
+    }
+}
+
 tasks.shadowJar {
     archiveClassifier.set("")
     archiveFileName.set("SimpleRewards-${version}.jar")

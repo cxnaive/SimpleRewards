@@ -7,10 +7,13 @@ import dev.user.rewards.database.DatabaseQueue;
 import dev.user.rewards.economy.EconomyManager;
 import dev.user.rewards.economy.PlayerPointsManager;
 import dev.user.rewards.gui.GUIManager;
+import dev.user.rewards.integration.MessageServiceIntegration;
 import dev.user.rewards.listener.GUIListener;
 import dev.user.rewards.listener.PlayerListener;
 import dev.user.rewards.manager.CustomRewardManager;
+import dev.user.rewards.manager.DragonKillManager;
 import dev.user.rewards.manager.EditSessionManager;
+import dev.user.rewards.manager.GameRewardManager;
 import dev.user.rewards.manager.WeeklyOnlineManager;
 import dev.user.rewards.placeholder.RewardsExpansion;
 import org.bukkit.entity.Player;
@@ -32,6 +35,9 @@ public class SimpleRewardsPlugin extends JavaPlugin {
     private WeeklyOnlineManager weeklyOnlineManager;
     private CustomRewardManager customRewardManager;
     private EditSessionManager editSessionManager;
+    private DragonKillManager dragonKillManager;
+    private GameRewardManager gameRewardManager;
+    private MessageServiceIntegration messageServiceIntegration;
     private RewardsExpansion rewardsExpansion;
 
     private int lastCheckInterval;
@@ -90,6 +96,27 @@ public class SimpleRewardsPlugin extends JavaPlugin {
         // 编辑会话管理器
         this.editSessionManager = new EditSessionManager(this);
 
+        // 强化末影龙击杀奖励
+        this.dragonKillManager = new DragonKillManager(this);
+        dragonKillManager.start();
+
+        // 幸运之柱游戏奖励
+        if (getConfig().getBoolean("game-reward.enabled", true)) {
+            this.gameRewardManager = new GameRewardManager(this);
+            gameRewardManager.start();
+        }
+
+        // 跨服消息集成
+        this.messageServiceIntegration = new MessageServiceIntegration(this);
+        messageServiceIntegration.init();
+
+        // 加载在线玩家数据
+        for (Player player : getServer().getOnlinePlayers()) {
+            if (gameRewardManager != null) {
+                gameRewardManager.loadPlayerData(player.getUniqueId());
+            }
+        }
+
         // 事件监听器（始终注册，编辑会话和自定义奖励也需要）
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new GUIListener(), this);
@@ -136,6 +163,14 @@ public class SimpleRewardsPlugin extends JavaPlugin {
             editSessionManager.shutdown();
         }
 
+        if (dragonKillManager != null) {
+            dragonKillManager.shutdown();
+        }
+
+        if (gameRewardManager != null) {
+            gameRewardManager.shutdown();
+        }
+
         if (economyManager != null) {
             economyManager.shutdown();
         }
@@ -178,4 +213,7 @@ public class SimpleRewardsPlugin extends JavaPlugin {
     public WeeklyOnlineManager getWeeklyOnlineManager() { return weeklyOnlineManager; }
     public CustomRewardManager getCustomRewardManager() { return customRewardManager; }
     public EditSessionManager getEditSessionManager() { return editSessionManager; }
+    public DragonKillManager getDragonKillManager() { return dragonKillManager; }
+    public GameRewardManager getGameRewardManager() { return gameRewardManager; }
+    public MessageServiceIntegration getMessageServiceIntegration() { return messageServiceIntegration; }
 }

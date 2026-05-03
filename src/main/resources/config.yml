@@ -51,6 +51,26 @@ weekly-online:
       points: 100
       description: "本周累计在线20小时"
 
+# 强化末影龙击杀奖励
+dragon-kill:
+  enabled: true
+  # 每次击杀奖励金币
+  reward: 200
+  # 每日获取奖励上限次数
+  daily-limit: 3
+
+# 幸运之柱游戏奖励
+game-reward:
+  enabled: true
+  rewards:
+    win: 100
+    loss: 50
+    kill: 50
+    kill-max-per-game: 300
+  limits:
+    daily: 2500
+    weekly: 5000
+
 # 首次加入奖励
 first-join:
   enabled: true

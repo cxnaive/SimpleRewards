@@ -3,6 +3,7 @@ package dev.user.rewards.command;
 import dev.user.rewards.SimpleRewardsPlugin;
 import dev.user.rewards.gui.CustomRewardAdminGUI;
 import dev.user.rewards.gui.CustomRewardPlayerGUI;
+import dev.user.rewards.gui.MainGUI;
 import dev.user.rewards.gui.WeeklyOnlineGUI;
 import dev.user.rewards.manager.CustomRewardManager;
 import org.bukkit.command.Command;
@@ -68,11 +69,7 @@ public class RewardsCommand implements CommandExecutor, TabCompleter {
             sendMessage(sender, plugin.getConfigManager().getMessage("player-only"));
             return true;
         }
-        if (plugin.getWeeklyOnlineManager() == null) {
-            sendMessage(sender, plugin.getConfigManager().getMessage("weekly-not-enabled"));
-            return true;
-        }
-        WeeklyOnlineGUI.open(plugin, player);
+        MainGUI.open(plugin, player);
         return true;
     }
 

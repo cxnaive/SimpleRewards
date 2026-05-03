@@ -213,6 +213,40 @@ public class DatabaseManager {
                     ")";
             stmt.execute(customRewardClaimsTable);
 
+            // 强化末影龙击杀记录表
+            String dragonKillLogTable = "CREATE TABLE IF NOT EXISTS dragon_kill_log (" +
+                    "    player_uuid VARCHAR(36) NOT NULL," +
+                    "    kill_date VARCHAR(10) NOT NULL," +
+                    "    kill_count INT DEFAULT 0," +
+                    "    PRIMARY KEY (player_uuid, kill_date)" +
+                    ")";
+            stmt.execute(dragonKillLogTable);
+
+            // 小游戏玩家奖励数据表（每日/每周上限）
+            String gameRewardsId = isMySQL ? "id BIGINT AUTO_INCREMENT PRIMARY KEY" : "id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY";
+            String playerGameRewardsTable = "CREATE TABLE IF NOT EXISTS player_game_rewards (" +
+                    "    player_uuid VARCHAR(36) PRIMARY KEY," +
+                    "    daily_earned DOUBLE DEFAULT 0," +
+                    "    weekly_earned DOUBLE DEFAULT 0," +
+                    "    last_reset_day BIGINT DEFAULT 0," +
+                    "    last_reset_week BIGINT DEFAULT 0" +
+                    ")";
+            stmt.execute(playerGameRewardsTable);
+
+            // 小游戏待领取奖励表
+            String pendingId = isMySQL ? "id BIGINT AUTO_INCREMENT PRIMARY KEY" : "id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY";
+            String pendingGameRewardsTable = "CREATE TABLE IF NOT EXISTS pending_game_rewards (" +
+                    pendingId + "," +
+                    "    player_uuid VARCHAR(36) NOT NULL," +
+                    "    kill_rewards INT DEFAULT 0," +
+                    "    victory_reward INT DEFAULT 0," +
+                    "    is_win BOOLEAN DEFAULT FALSE," +
+                    "    details TEXT," +
+                    "    created_at BIGINT DEFAULT 0," +
+                    "    claimed BOOLEAN DEFAULT FALSE" +
+                    ")";
+            stmt.execute(pendingGameRewardsTable);
+
             // 创建索引
             createIndexes(stmt, isMySQL);
 
@@ -226,7 +260,9 @@ public class DatabaseManager {
             {"idx_reward_log_type", "reward_log", "reward_type"},
             {"idx_reward_log_time", "reward_log", "created_at"},
             {"idx_custom_reward_claims_player", "custom_reward_claims", "player_uuid"},
-            {"idx_custom_reward_claims_reward", "custom_reward_claims", "reward_id"}
+            {"idx_custom_reward_claims_reward", "custom_reward_claims", "reward_id"},
+            {"idx_pending_game_rewards_player", "pending_game_rewards", "player_uuid"},
+            {"idx_pending_game_rewards_claimed", "pending_game_rewards", "claimed"}
         };
 
         for (String[] index : indexes) {

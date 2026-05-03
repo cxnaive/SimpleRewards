@@ -7,10 +7,12 @@ import dev.user.rewards.manager.EditSessionManager.Session;
 import dev.user.rewards.util.MessageUtil;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -31,8 +33,19 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        UUID uuid = event.getPlayer().getUniqueId();
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (!(event.getEntity() instanceof EnderDragon dragon)) return;
+        if (!plugin.getConfig().getBoolean("dragon-kill.enabled", true)) return;
+        if (!dragon.getScoreboardTags().contains("trueEnding_dragon_particlechecked")) return;
+        Player killer = dragon.getKiller();
+        if (killer == null) return;
+        if (plugin.getDragonKillManager() != null) {
+            plugin.getDragonKillManager().onDragonKill(killer);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent event) {        UUID uuid = event.getPlayer().getUniqueId();
 
         if (plugin.getWeeklyOnlineManager() != null) {
             plugin.getWeeklyOnlineManager().onPlayerJoin(uuid);
@@ -40,6 +53,14 @@ public class PlayerListener implements Listener {
 
         if (plugin.getCustomRewardManager() != null) {
             plugin.getCustomRewardManager().onPlayerJoin(uuid);
+        }
+
+        if (plugin.getDragonKillManager() != null) {
+            plugin.getDragonKillManager().loadPlayerData(uuid);
+        }
+
+        if (plugin.getGameRewardManager() != null) {
+            plugin.getGameRewardManager().loadPlayerData(uuid);
         }
     }
 
@@ -53,6 +74,14 @@ public class PlayerListener implements Listener {
 
         if (plugin.getCustomRewardManager() != null) {
             plugin.getCustomRewardManager().onPlayerQuit(uuid);
+        }
+
+        if (plugin.getDragonKillManager() != null) {
+            plugin.getDragonKillManager().onPlayerQuit(uuid);
+        }
+
+        if (plugin.getGameRewardManager() != null) {
+            plugin.getGameRewardManager().onPlayerQuit(uuid);
         }
 
         // 清理编辑会话
