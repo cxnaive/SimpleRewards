@@ -62,23 +62,26 @@ public class GameplayRewardGUI extends AbstractGUI {
     }
 
     private ItemStack createPillarItem(boolean enabled) {
-        ItemStack item = new ItemStack(Material.BEDROCK);
+        ItemStack item = new ItemStack(Material.NETHER_STAR);
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
 
-        meta.displayName(Component.text("幸运之柱")
+        meta.displayName(Component.text("小游戏")
                 .color(enabled ? NamedTextColor.GOLD : NamedTextColor.GRAY)
                 .decoration(TextDecoration.ITALIC, false));
 
         List<Component> lore = new ArrayList<>();
         lore.add(Component.empty());
         if (enabled) {
-            lore.add(Component.text("  参与幸运之柱小游戏")
+            lore.add(Component.text("  参与服务器小游戏")
                     .color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
             lore.add(Component.text("  获得击杀、胜负奖励！")
                     .color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
             lore.add(Component.empty());
-            lore.add(Component.text("  点击查看待领取奖励")
+            lore.add(Component.text("  奖励都将只在小游戏区发放")
+                    .color(NamedTextColor.AQUA).decoration(TextDecoration.ITALIC, false));
+            lore.add(Component.empty());
+            lore.add(Component.text("  点击前往小游戏大厅")
                     .color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         } else {
             lore.add(Component.text("  未启用")
